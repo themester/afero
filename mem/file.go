@@ -57,12 +57,19 @@ type FileData struct {
 	dir     bool
 	mode    os.FileMode
 	modtime time.Time
+	sys     interface{}
 }
 
 func (d *FileData) Name() string {
 	d.Lock()
 	defer d.Unlock()
 	return d.name
+}
+
+func (d *FileData) Sys() interface{} {
+	d.Lock()
+	defer d.Unlock()
+	return d.sys
 }
 
 func CreateFile(name string) *FileData {
@@ -76,6 +83,12 @@ func CreateDir(name string) *FileData {
 func ChangeFileName(f *FileData, newname string) {
 	f.Lock()
 	f.name = newname
+	f.Unlock()
+}
+
+func SetSys(f *FileData, o interface{}) {
+	f.Lock()
+	f.sys = o
 	f.Unlock()
 }
 
