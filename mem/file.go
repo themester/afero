@@ -310,7 +310,11 @@ func (s *FileInfo) IsDir() bool {
 	defer s.Unlock()
 	return s.dir
 }
-func (s *FileInfo) Sys() interface{} { return nil }
+func (s *FileInfo) Sys() interface{} {
+	s.Lock()
+	defer s.Unlock()
+	return s.sys
+}
 func (s *FileInfo) Size() int64 {
 	if s.IsDir() {
 		return int64(42)
