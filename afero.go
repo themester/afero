@@ -125,6 +125,10 @@ func Chmod(name string, mode os.FileMode) error {
 	return fs.Chmod(name, mode)
 }
 
+func Link(name string, o interface{}) error {
+	return fs.Link(name, o)
+}
+
 func Chtimes(name string, atime time.Time, mtime time.Time) error {
 	return fs.Chtimes(name, atime, mtime)
 }
