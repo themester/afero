@@ -1,16 +1,3 @@
-// Copyright © 2014 Steve Francia <spf@spf13.com>.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package afero
 
 import (
@@ -22,8 +9,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/spf13/afero/mem"
+	"github.com/themester/afero/mem"
 )
+
+const FilePathSeparator = "/"
 
 type MemMapFs struct {
 	mu   sync.RWMutex
@@ -31,7 +20,7 @@ type MemMapFs struct {
 	init sync.Once
 }
 
-func NewMemMapFs() Fs {
+func NewMemMapFs() *MemMapFs {
 	return &MemMapFs{}
 }
 
@@ -357,9 +346,3 @@ func (m *MemMapFs) List() {
 		fmt.Println(x.Name(), y.Size())
 	}
 }
-
-// func debugMemMapList(fs Fs) {
-// 	if x, ok := fs.(*MemMapFs); ok {
-// 		x.List()
-// 	}
-// }

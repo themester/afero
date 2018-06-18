@@ -1,25 +1,3 @@
-// Copyright © 2014 Steve Francia <spf@spf13.com>.
-// Copyright 2013 tsuru authors. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-// Package afero provides types and methods for interacting with the filesystem,
-// as an abstraction layer.
-
-// Afero also provides a few implementations that are mostly interoperable. One that
-// uses the operating system filesystem, one that uses memory to store files
-// (cross platform) and an interface that should be implemented if you want to
-// provide your own filesystem.
-
 package afero
 
 import (
@@ -28,10 +6,6 @@ import (
 	"os"
 	"time"
 )
-
-type Afero struct {
-	Fs
-}
 
 // File represents a file in the filesystem.
 type File interface {
@@ -106,3 +80,51 @@ var (
 	ErrFileExists        = os.ErrExist
 	ErrDestinationExists = os.ErrExist
 )
+
+var fs = NewMemMapFs()
+
+func Name() string { return fs.Name() }
+
+func Create(name string) (File, error) {
+	return fs.Create(name)
+}
+
+func Mkdir(name string, perm os.FileMode) error {
+	return fs.Mkdir(name, perm)
+}
+
+func MkdirAll(path string, perm os.FileMode) error {
+	return fs.MkdirAll(path, perm)
+}
+
+func Open(name string) (File, error) {
+	return fs.Open(name)
+}
+
+func OpenFile(name string, flag int, perm os.FileMode) (File, error) {
+	return fs.OpenFile(name, flag, perm)
+}
+
+func Remove(name string) error {
+	return fs.Remove(name)
+}
+
+func RemoveAll(path string) error {
+	return fs.RemoveAll(path)
+}
+
+func Rename(oldname, newname string) error {
+	return fs.Rename(oldname, newname)
+}
+
+func Stat(name string) (os.FileInfo, error) {
+	return fs.Stat(name)
+}
+
+func Chmod(name string, mode os.FileMode) error {
+	return fs.Chmod(name, mode)
+}
+
+func Chtimes(name string, atime time.Time, mtime time.Time) error {
+	return fs.Chtimes(name, atime, mtime)
+}
