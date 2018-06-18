@@ -18,6 +18,7 @@ type MemMapFs struct {
 	mu   sync.RWMutex
 	data map[string]*mem.FileData
 	init sync.Once
+	// Type is related object type
 }
 
 func NewMemMapFs() *MemMapFs {
@@ -304,6 +305,15 @@ func (m *MemMapFs) Stat(name string) (os.FileInfo, error) {
 	}
 	fi := mem.GetFileInfo(f.(*mem.File).Data())
 	return fi, nil
+}
+
+// Link does NOT create a symbolic link. Sets 'o' to be returned at os.FileInfo.Sys()
+func (m *MemMapFs) Link(name string, o interface{}) error {
+	fi, err := m.open(name)
+	if err == nil {
+		mem.SetSys(fi, o)
+	}
+	return err
 }
 
 func (m *MemMapFs) Chmod(name string, mode os.FileMode) error {
